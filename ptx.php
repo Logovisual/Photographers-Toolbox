@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: Photography Client Proofing
+Plugin Name: Photographers Toolbox
 Plugin URI:
-Description:
-Version: 0.0.1
+Description: A plugin designed specifically for photographers. Private client proofing galleries. Watermark photos on upload. Protected digital downloads. Page templating compatible with any modern WordPress theme. Frontend login for clients.
+Version: 0.1.0
 Author:
 Author URI:
 Text Domain: ptx
@@ -20,7 +20,7 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * Automagically include class files when requested.
  *
- * @since 0.0.1
+ * @since 0.1.0
  *
  * @param string $class_name The class name to load. 
  */
@@ -40,9 +40,11 @@ function ptx_autoloader( $class_name ) {
 }
 spl_autoload_register( 'ptx_autoloader' );
 
-register_activation_hook( __FILE__, PTX_Activate::activate() );
-register_deactivation_hook( __FILE__, PTX_Deactivate::deactivate() );
+// Plugin activation/deactivation hooks
+register_activation_hook( __FILE__, array( 'PTX_Activate', 'activate' ) );
+register_deactivation_hook( __FILE__, array( 'PTX_Deactivate', 'deactivate' ) );
 
 // Start the plugin
-new PTX_Core;
+new PTX_Core( 'ptx' );
 new PTX_Gallery;
+new PTX_Download_API;

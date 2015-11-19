@@ -4,9 +4,9 @@
  *
  * Register custom post type gallery.
  *
- * @package Photography Client Proofing
+ * @package Photographers Toolbox
  * @subpackage Classes
- * @since 0.0.1
+ * @since 0.1.0
  */
 
 // Direct access not allowed.
@@ -19,16 +19,23 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * Register cutom post type gallery.
  *
- * @since 0.0.1
+ * @since 0.1.0
  */
-class PCP_Gallery {
+class PTX_Gallery extends PTX_Shared {
 
 	/**
 	 * Construct
 	 */
 	function __construct() {
+
+		// Access shared resources
+		parent::__construct();
+
+		// Hook into WordPress
 		add_action( 'init', array( $this, 'initialize' ) );
 		add_action( 'pre_get_posts', array( $this, 'change_default_admin_order' ) );
+		add_filter( 'enter_title_here', array( $this, 'change_enter_title_text' ) );
+		add_action( 'post_submitbox_misc_actions' , array( $this, 'post_submitbox_change_visibility' ) );
 	}
 
 	/**
@@ -37,18 +44,20 @@ class PCP_Gallery {
 	 * @param object $wp_query The main query.
 	 */
 	function change_default_admin_order( $wp_query ) {
+
+		// Setup default order if not set
 		if ( is_admin() && !isset( $_GET['orderby'] ) ) {
 
-			// Get post type from the query
+			// Get post type from wp_query
 			$post_type = $wp_query->query['post_type'];
 
-			// Apply ordering to the gallery post type
+			// Apply ordering to the ptx-gallery post type
 			if ( in_array( $post_type, array( 'photography-gallery' ) ) ) {
 				$wp_query->set('orderby', 'date');
 				$wp_query->set('order', 'DESC');
 			}
-			
-			// Apply ordering to the gallery post type
+
+			// Apply ordering to the ptx-gallery post type
 			if ( in_array( $post_type, array( 'photography-print' ) ) ) {
 				$wp_query->set('orderby', 'menu_order');
 				$wp_query->set('order', 'ASC');
@@ -57,14 +66,65 @@ class PCP_Gallery {
 	}
 
 	/**
-	 * Initialize
+	 * Change "enter title here" text
+	 *
+	 * @param string $input The placeholder text to display in the title input field. 
+	 */
+	public function change_enter_title_text( $input ) {
+		$screen = get_current_screen();
+
+		// Change the text if ptx-gallery post type
+		if ( is_admin() && 'ptx-gallery' == $screen->post_type ) {
+			return __( 'Enter a name for the gallery here', $this->domain );
+		}
+		return $input;
+	}
+
+	/**
+	 * Initialize the plugin
 	 */
 	function initialize() {
 		$this->register_post_type_gallery();
 	}
 
 	/**
-	 * Register gallery post type
+	 * Change default gallery post Visibility to private
+	 *
+	 * Change the default post submitbox visiility value to Private. Display information
+	 * about it below the submit button to notify user that it's being posted as private.
+	 */
+	function post_submitbox_change_visibility() {
+	    global $post;
+
+	    if ( 'ptx-gallery' != $post->post_type ) {
+	        return;
+		}
+
+		$screen = get_current_screen();
+		if ( 'ptx-gallery' == $screen->post_type && 'edit.php?post_type=ptx-gallery' == $screen->parent_file && !isset( $_GET['action'] ) ) {
+
+		    $visibility = 'private';
+		    $visibility_trans = __( 'Private', $this->domain );
+			$message = __( 'New galleries are always set to <strong>private</strong> by default, to enforce a required login. Visitors not logged in will be redirected to the login page.', $this->domain );
+
+			echo '<script type="text/javascript">';
+	        echo '(function($){';
+			echo 'try {';
+			echo "$('#post-visibility-display').text('" . $visibility_trans . "');";
+			echo "$('#hidden-post-visibility').val('" . $visibility . "');";
+			echo "$('#visibility-radio-" . $visibility . "').attr('checked', true);";
+			echo '} catch(err){}';
+			echo '}) (jQuery);';
+			echo '</script>';
+			
+			echo '<div class="publish_note">';
+			echo $message;
+			echo '</div>';
+		}
+	}
+
+	/**
+	 * Register the gallery post type
 	 *
 	 * @access private
 	 */
@@ -72,19 +132,19 @@ class PCP_Gallery {
 
 		// Labels for custom post type photography-gallery
 		$labels = array(
-			'name'               => _x( 'Galleries', 'post type general name', 'pcp' ),
-			'singular_name'      => _x( 'Gallery', 'post type singular name', 'pcp' ),
-			'add_new'            => _x( 'Add New', 'gallery', 'pcp' ),
-			'add_new_item'       => __( 'Add New Gallery', 'pcp' ),
-			'edit_item'          => __( 'Edit Gallery', 'pcp' ),
-			'new_item'           => __( 'New Gallery', 'pcp' ),
-			'all_items'          => __( 'All Galleries', 'pcp' ),
-			'view_item'          => __( 'View Gallery', 'pcp' ),
-			'search_items'       => __( 'Search Galleries', 'pcp' ),
-			'not_found'          =>  __( 'No galleries found', 'pcp' ),
-			'not_found_in_trash' => __( 'No galleries found in trash', 'pcp' ),
+			'name'               => _x( 'Galleries', 'post type general name', $this->domain ),
+			'singular_name'      => _x( 'Gallery', 'post type singular name', $this->domain ),
+			'add_new'            => _x( 'Add New', 'gallery', $this->domain ),
+			'add_new_item'       => __( 'Add New Gallery', $this->domain ),
+			'edit_item'          => __( 'Edit Gallery', $this->domain ),
+			'new_item'           => __( 'New Gallery', $this->domain ),
+			'all_items'          => __( 'All Galleries', $this->domain ),
+			'view_item'          => __( 'View Gallery', $this->domain ),
+			'search_items'       => __( 'Search Galleries', $this->domain ),
+			'not_found'          => __( 'No galleries found', $this->domain ),
+			'not_found_in_trash' => __( 'No galleries found in trash', $this->domain ),
 			'parent_item_colon'  => '',
-			'menu_name'          => __( 'Galleries', 'pcp' )
+			'menu_name'          => __( 'Galleries', $this->domain )
 		);
 
 		// Args for custom post type photography-gallery
@@ -108,14 +168,14 @@ class PCP_Gallery {
 								   ),
 			'has_archive'          => false,
 			'hierarchical'         => true,
-			'register_meta_box_cb' => 'pcp_gallery_meta_boxes',
+			//'register_meta_box_cb' => 'ptx_gallery_meta_boxes',
 			'map_meta_cap'         => true,
 			'menu_icon'            => 'dashicons-format-gallery',
 			'supports'             => array( 'title', 'editor', 'page-attributes', 'thumbnail', 'author', 'comments' ),
-			'rewrite'              => array( 'slug' => _x( 'gallery', 'cpt gallery slug', 'pcp' ) )
+			'rewrite'              => array( 'slug' => _x( 'gallery', 'cpt gallery slug', $this->domain ) )
 		);
 
-		// Add the post type
-		register_post_type( 'pcp-gallery',$args );
+		// Register the post type
+		register_post_type( 'ptx-gallery',$args );
 	}
 }

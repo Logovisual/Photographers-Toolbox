@@ -2,11 +2,11 @@
 /**
  * Activate
  *
- * Functions fired on plugin activation.
+ * Fired during plugin activation.
  *
- * @package Photography Client Proofing
+ * @package Photographers Toolbox
  * @subpackage Classes
- * @since 0.0.1
+ * @since 0.1.0
  */
 
 // Direct access not allowed.
@@ -17,14 +17,18 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Activate
  *
- * Fired during plugin activation.
+ * This class defines all code necessary to run during the plugin's activation.
  *
- * @since 0.0.1
+ * @since 0.1.0
  */
 class PTX_Activate {
 
 	/**
 	 * Activate
+	 *
+	 * @global $wpdb
+	 *
+	 * @static
 	 */
 	static function activate() {
 		global $wpdb;
@@ -33,7 +37,6 @@ class PTX_Activate {
 		$check = $wpdb->query("SHOW COLUMNS FROM $wpdb->terms LIKE 'term_order'");
 
 		if ( 0 == $check ) {
-
 			// Add custom term_order to the terms table, enables sorting of taxonomy terms
 			$wpdb->query( "ALTER TABLE $wpdb->terms ADD `term_order` INT( 4 ) NULL DEFAULT '0'" );
 		}
@@ -56,6 +59,6 @@ class PTX_Activate {
 		$client->add_cap( 'read' );
 		$client->add_cap( 'read_gallery' );
 		$client->add_cap( 'read_private_galleries' );
-		$client->add_cap( 'edit_others_posts' ); // Workaround to let users see attachments of private posts 
+		$client->add_cap( 'edit_others_posts' ); // Workaround to let users see attachments of private posts
 	}
 }
