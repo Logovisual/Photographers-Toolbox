@@ -40,4 +40,7 @@ function pcp_autoloader( $class_name ) {
 }
 spl_autoload_register( 'pcp_autoloader' );
 
+register_activation_hook( __FILE__, PCP_Activate::activate() );
+register_deactivation_hook( __FILE__, PCP_Deactivate::deactivate() );
+
 $pcp_core = new PCP_Core;
