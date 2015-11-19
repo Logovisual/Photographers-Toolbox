@@ -76,7 +76,7 @@ class PTX_Core extends PTX_Shared {
 	function deactivate() {
 		$admin = get_role( 'administrator' );
 		$admin->remove_cap( 'edit_gallery' );
-	    $admin->remove_cap( 'edit_galleries' );
+		$admin->remove_cap( 'edit_galleries' );
 		$admin->remove_cap( 'edit_other_galleries' );
 		$admin->remove_cap( 'publish_galleries' );
 		$admin->remove_cap( 'read_gallery' );
