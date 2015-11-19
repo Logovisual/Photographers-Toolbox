@@ -9,7 +9,11 @@ Author URI:
 Text Domain: pcp
 Domain Path: /languages
 */
-if ( ! defined( 'WPINC' ) ) die; // Direct access not allowed
+
+// Direct access not allowed.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
 
 /**
  * Autoload
