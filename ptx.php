@@ -47,3 +47,4 @@ register_deactivation_hook( __FILE__, array( 'PTX_Deactivate', 'deactivate' ) );
 // Start the plugin
 new PTX_Core( 'ptx' );
 new PTX_Gallery;
+new PTX_Download_API;
