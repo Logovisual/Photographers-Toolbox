@@ -3,7 +3,7 @@
 Plugin Name: Photography Client Proofing
 Plugin URI:
 Description:
-Version:
+Version: 0.0.1
 Author:
 Author URI:
 Text Domain: pcp
