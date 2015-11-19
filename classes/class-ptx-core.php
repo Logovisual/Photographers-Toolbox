@@ -39,6 +39,15 @@ class PTX_Core extends PTX_Shared {
 		// Hook into WordPress
 		add_action( 'admin_enqueue_scripts', array( $this, 'load_css') );
 		add_action( 'wp_enqueue_scripts', array( $this, 'load_scripts' ) );
+
+		$plugin_basename = plugin_basename( dirname( dirname( __FILE__ ) ).'/ptx.php' );
+		add_filter( "plugin_action_links_$plugin_basename", array( $this, 'add_plugin_settings_link' ) );
+	}
+
+	function add_plugin_settings_link( $links ) {
+		$settings_link = '<a href="admin.php?page=ptx_menu_page">' . __( 'Settings', $this->domain ) . '</a>';
+		$links[] = $settings_link;
+		return $links;
 	}
 
 	/**

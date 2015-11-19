@@ -43,8 +43,8 @@ class PTX_Options extends PTX_Shared {
 	 */
 	public function add_menu_page() {
 		$page = add_menu_page(
-			__( 'PTX Options', $this->domain ), 
-			__( 'PTX Options', $this->domain ), 
+			__( 'PTX Settings', $this->domain ), 
+			__( 'PTX Settings', $this->domain ), 
 			'manage_options', 
 			'ptx_menu_page',
 			array( $this, 'render' ),
