@@ -40,9 +40,9 @@ function ptx_autoloader( $class_name ) {
 }
 spl_autoload_register( 'ptx_autoloader' );
 
-register_activation_hook( __FILE__, PTX_Activate::activate() );
-register_deactivation_hook( __FILE__, PTX_Deactivate::deactivate() );
-
 // Start the plugin
-new PTX_Core;
-new PTX_Gallery;
+$ptx_core = new PTX_Core;
+$ptx_gallery = new PTX_Gallery;
+
+register_activation_hook( __FILE__, array( $ptx_core, 'activate' ) );
+register_deactivation_hook( __FILE__, array( $ptx_core, 'deactivate' ) );
