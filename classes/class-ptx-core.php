@@ -26,7 +26,15 @@ class PTX_Core extends PTX_Shared {
 	/**
 	 * Construct
 	 */
-	function __construct() {
+	function __construct( $domain ) {
 		parent::__construct();
+		$this->set_domain( $domain );
+		$this->set_locale();
+		$this->plugin_name = __( 'Photographers Toolbox', $this->domain );
 	}
+
+	private function set_locale() {
+		$i18n = new PTX_i18n;
+		add_action( 'plugins_loaded', array( $i18n, 'load_textdomain' ) );
+	} 
 }

@@ -41,7 +41,7 @@ function ptx_autoloader( $class_name ) {
 spl_autoload_register( 'ptx_autoloader' );
 
 // Start the plugin
-new PTX_Core;
+new PTX_Core( 'ptx' );
 new PTX_Gallery;
 
 register_activation_hook( __FILE__, array( 'PTX_Activate', 'activate' ) );

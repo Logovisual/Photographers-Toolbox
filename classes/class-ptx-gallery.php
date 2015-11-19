@@ -21,12 +21,13 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @since 0.0.1
  */
-class PTX_Gallery {
+class PTX_Gallery extends PTX_Shared {
 
 	/**
 	 * Construct
 	 */
 	function __construct() {
+		parent::__construct();
 		add_action( 'init', array( $this, 'initialize' ) );
 		add_action( 'pre_get_posts', array( $this, 'change_default_admin_order' ) );
 		add_filter( 'enter_title_here', array( $this, 'change_enter_title_text' ) );
@@ -38,18 +39,20 @@ class PTX_Gallery {
 	 * @param object $wp_query The main query.
 	 */
 	function change_default_admin_order( $wp_query ) {
+
+		// Setup default order if not set
 		if ( is_admin() && !isset( $_GET['orderby'] ) ) {
 
-			// Get post type from the query
+			// Get post type from wp_query
 			$post_type = $wp_query->query['post_type'];
 
-			// Apply ordering to the gallery post type
+			// Apply ordering to the ptx-gallery post type
 			if ( in_array( $post_type, array( 'photography-gallery' ) ) ) {
 				$wp_query->set('orderby', 'date');
 				$wp_query->set('order', 'DESC');
 			}
-			
-			// Apply ordering to the gallery post type
+
+			// Apply ordering to the ptx-gallery post type
 			if ( in_array( $post_type, array( 'photography-print' ) ) ) {
 				$wp_query->set('orderby', 'menu_order');
 				$wp_query->set('order', 'ASC');
@@ -67,20 +70,20 @@ class PTX_Gallery {
 
 		// Change the text if ptx-gallery post type
 		if ( is_admin() && 'ptx-gallery' == $screen->post_type ) {
-			return __( 'Enter a name for the gallery here', 'ptx' );
+			return __( 'Enter a name for the gallery here', $this->domain );
 		}
 		return $input;
 	}
 
 	/**
-	 * Initialize
+	 * Initialize the plugin
 	 */
 	function initialize() {
 		$this->register_post_type_gallery();
 	}
 
 	/**
-	 * Register gallery post type
+	 * Register the gallery post type
 	 *
 	 * @access private
 	 */
@@ -88,19 +91,19 @@ class PTX_Gallery {
 
 		// Labels for custom post type photography-gallery
 		$labels = array(
-			'name'               => _x( 'Galleries', 'post type general name', 'ptx' ),
-			'singular_name'      => _x( 'Gallery', 'post type singular name', 'ptx' ),
-			'add_new'            => _x( 'Add New', 'gallery', 'ptx' ),
-			'add_new_item'       => __( 'Add New Gallery', 'ptx' ),
-			'edit_item'          => __( 'Edit Gallery', 'ptx' ),
-			'new_item'           => __( 'New Gallery', 'ptx' ),
-			'all_items'          => __( 'All Galleries', 'ptx' ),
-			'view_item'          => __( 'View Gallery', 'ptx' ),
-			'search_items'       => __( 'Search Galleries', 'ptx' ),
-			'not_found'          =>  __( 'No galleries found', 'ptx' ),
-			'not_found_in_trash' => __( 'No galleries found in trash', 'ptx' ),
+			'name'               => _x( 'Galleries', 'post type general name', $this->domain ),
+			'singular_name'      => _x( 'Gallery', 'post type singular name', $this->domain ),
+			'add_new'            => _x( 'Add New', 'gallery', $this->domain ),
+			'add_new_item'       => __( 'Add New Gallery', $this->domain ),
+			'edit_item'          => __( 'Edit Gallery', $this->domain ),
+			'new_item'           => __( 'New Gallery', $this->domain ),
+			'all_items'          => __( 'All Galleries', $this->domain ),
+			'view_item'          => __( 'View Gallery', $this->domain ),
+			'search_items'       => __( 'Search Galleries', $this->domain ),
+			'not_found'          => __( 'No galleries found', $this->domain ),
+			'not_found_in_trash' => __( 'No galleries found in trash', $this->domain ),
 			'parent_item_colon'  => '',
-			'menu_name'          => __( 'Galleries', 'ptx' )
+			'menu_name'          => __( 'Galleries', $this->domain )
 		);
 
 		// Args for custom post type photography-gallery
@@ -128,10 +131,10 @@ class PTX_Gallery {
 			'map_meta_cap'         => true,
 			'menu_icon'            => 'dashicons-format-gallery',
 			'supports'             => array( 'title', 'editor', 'page-attributes', 'thumbnail', 'author', 'comments' ),
-			'rewrite'              => array( 'slug' => _x( 'gallery', 'cpt gallery slug', 'ptx' ) )
+			'rewrite'              => array( 'slug' => _x( 'gallery', 'cpt gallery slug', $this->domain ) )
 		);
 
-		// Add the post type
+		// Register the post type
 		register_post_type( 'ptx-gallery',$args );
 	}
 }

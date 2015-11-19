@@ -24,9 +24,32 @@ if ( ! defined( 'WPINC' ) ) {
 class PTX_Shared {
 
 	/**
+	 * Text Domain
+	 *
+	 * @var string $domain
+	 */
+	protected $domain;
+
+	/**
+	 * The plugin name
+	 *
+	 * @var string $plugin_name
+	 */
+	protected $plugin_name;
+
+	/**
 	 * Construct
 	 */
 	function __construct() {
 
+	}
+
+	/**
+	 * Set text domain
+	 *
+	 * @param string $domain The text domain used for translating.
+	 */
+	protected function set_domain( $domain ) {
+		$this->domain = $domain;
 	}
 }
