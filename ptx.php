@@ -2,7 +2,7 @@
 /*
 Plugin Name: Photographers Toolbox
 Plugin URI:
-Description:
+Description: A plugin designed specifically for photographers. Private client proofing galleries. Watermark photos on upload. Protected digital downloads. Page templating compatible with any modern WordPress theme. Frontend login for clients.
 Version: 0.0.1
 Author:
 Author URI:
