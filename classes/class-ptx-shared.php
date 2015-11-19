@@ -4,7 +4,7 @@
  *
  * Shared functions, other classes extend this class to gain access.
  *
- * @package Photography Client Proofing
+ * @package Photographers Toolbox
  * @subpackage Classes
  * @since 0.0.1
  */

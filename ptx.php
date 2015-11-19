@@ -3,7 +3,7 @@
 Plugin Name: Photographers Toolbox
 Plugin URI:
 Description: A plugin designed specifically for photographers. Private client proofing galleries. Watermark photos on upload. Protected digital downloads. Page templating compatible with any modern WordPress theme. Frontend login for clients.
-Version: 0.0.1
+Version: 0.0.2
 Author:
 Author URI:
 Text Domain: ptx
@@ -41,8 +41,8 @@ function ptx_autoloader( $class_name ) {
 spl_autoload_register( 'ptx_autoloader' );
 
 // Start the plugin
-$ptx_core = new PTX_Core;
-$ptx_gallery = new PTX_Gallery;
+new PTX_Core;
+new PTX_Gallery;
 
-register_activation_hook( __FILE__, array( $ptx_core, 'activate' ) );
-register_deactivation_hook( __FILE__, array( $ptx_core, 'deactivate' ) );
+register_activation_hook( __FILE__, array( 'PTX_Activate', 'activate' ) );
+register_deactivation_hook( __FILE__, array( 'PTX_Deactivate', 'deactivate' ) );

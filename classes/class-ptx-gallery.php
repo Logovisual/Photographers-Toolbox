@@ -4,7 +4,7 @@
  *
  * Register custom post type gallery.
  *
- * @package Photography Client Proofing
+ * @package Photographers Toolbox
  * @subpackage Classes
  * @since 0.0.1
  */
