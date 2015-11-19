@@ -21,7 +21,7 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @since 0.0.1
  */
-class PCP_Activate {
+class PTX_Activate {
 
 	/**
 	 * Activate
@@ -49,7 +49,7 @@ class PCP_Activate {
 		$admin->add_cap( 'delete_gallery' );
 
 		// Add custom role "Client"
-		add_role( 'client',	__( 'Client', 'pcp' ) );
+		add_role( 'client',	__( 'Client', 'ptx' ) );
 
 		// Add custom capabilities to the client role
 		$client = get_role( 'client' );

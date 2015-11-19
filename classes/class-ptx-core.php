@@ -1,8 +1,8 @@
 <?php
 /**
- * Shared
+ * Core
  *
- * Shared functions, other classes extend this class to gain access.
+ * Base functions of the plugin.
  *
  * @package Photography Client Proofing
  * @subpackage Classes
@@ -15,18 +15,18 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Shared
+ * Core
  *
- * Commonly used plugin functions contained in its own class.
+ * Base functions of the plugin.
  *
  * @since 0.0.1
  */
-class PCP_Shared {
+class PTX_Core extends PTX_Shared {
 
 	/**
 	 * Construct
 	 */
 	function __construct() {
-
+		parent::__construct();
 	}
 }

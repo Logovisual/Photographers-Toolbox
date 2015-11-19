@@ -6,7 +6,7 @@ Description:
 Version: 0.0.1
 Author:
 Author URI:
-Text Domain: pcp
+Text Domain: ptx
 Domain Path: /languages
 */
 
@@ -24,8 +24,8 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @param string $class_name The class name to load. 
  */
-function pcp_autoloader( $class_name ) {
-	if ( false !== strpos( $class_name, 'PCP' ) ) {
+function ptx_autoloader( $class_name ) {
+	if ( false !== strpos( $class_name, 'PTX' ) ) {
 
 		// Construct the class file name
 		$class_path = plugin_dir_path(__FILE__) . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR;
@@ -38,9 +38,11 @@ function pcp_autoloader( $class_name ) {
 		}
 	}
 }
-spl_autoload_register( 'pcp_autoloader' );
+spl_autoload_register( 'ptx_autoloader' );
 
-register_activation_hook( __FILE__, PCP_Activate::activate() );
-register_deactivation_hook( __FILE__, PCP_Deactivate::deactivate() );
+register_activation_hook( __FILE__, PTX_Activate::activate() );
+register_deactivation_hook( __FILE__, PTX_Deactivate::deactivate() );
 
-$pcp_core = new PCP_Core;
+// Start the plugin
+new PTX_Core;
+new PTX_Gallery;

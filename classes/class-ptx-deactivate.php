@@ -21,7 +21,7 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @since 0.0.1
  */
-class PCP_Deactivate {
+class PTX_Deactivate {
 
 	/**
 	 * Activate
