@@ -49,3 +49,6 @@ new PTX_Core( 'ptx' );
 new PTX_Gallery;
 new PTX_Download_API;
 new PTX_Watermark;
+if ( is_admin() ) {
+	new PTX_Options;
+}

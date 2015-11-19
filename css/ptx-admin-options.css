@@ -1,0 +1,43 @@
+#ptx_options input {
+	border: 1px #d8d8d8 solid;
+}
+.form-table td {
+	vertical-align: top;
+}
+.description.success,
+.description.fail {
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	padding: 8px 12px;
+	font-style: normal;
+}
+.description.success {
+	background-color: #DFF2BF;
+	color: #4F8A10;
+}
+.description.fail {
+	background-color: #FFBABA;
+	color: #D8000C;
+}
+.description.success:before {
+	float: left;
+	font-family: "dashicons";
+	font-size: 16px;
+	content: "\f147";
+	margin-right: 8px;
+}
+.description.fail:before {
+	float: left;
+	font-family: "dashicons";
+	font-size: 16px;
+	content: "\f534";
+	margin-right: 8px;
+}
+th .description {
+	font-size: 12px;
+	font-weight: normal;
+}
+.form-table td p.description {
+	margin-bottom: 10px;
+}

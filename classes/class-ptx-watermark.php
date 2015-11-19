@@ -26,7 +26,7 @@ class PTX_Watermark extends PTX_Shared {
 	/**
 	 * Construct
 	 */
-	function __construct( $domain ) {
+	function __construct() {
 
 		// Access shared resources
 		parent::__construct();
