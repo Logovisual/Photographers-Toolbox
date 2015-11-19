@@ -3,13 +3,17 @@
 Plugin Name: Photography Client Proofing
 Plugin URI:
 Description:
-Version:
+Version: 0.0.1
 Author:
 Author URI:
-Text Domain: pcp
+Text Domain: ptx
 Domain Path: /languages
 */
-if ( ! defined( 'WPINC' ) ) die; // Direct access not allowed
+
+// Direct access not allowed.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
 
 /**
  * Autoload
@@ -20,8 +24,8 @@ if ( ! defined( 'WPINC' ) ) die; // Direct access not allowed
  *
  * @param string $class_name The class name to load. 
  */
-function pcp_autoloader( $class_name ) {
-	if ( false !== strpos( $class_name, 'PCP' ) ) {
+function ptx_autoloader( $class_name ) {
+	if ( false !== strpos( $class_name, 'PTX' ) ) {
 
 		// Construct the class file name
 		$class_path = plugin_dir_path(__FILE__) . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR;
@@ -34,6 +38,11 @@ function pcp_autoloader( $class_name ) {
 		}
 	}
 }
-spl_autoload_register( 'pcp_autoloader' );
+spl_autoload_register( 'ptx_autoloader' );
 
-$pcp_core = new PCP_Core;
+register_activation_hook( __FILE__, PTX_Activate::activate() );
+register_deactivation_hook( __FILE__, PTX_Deactivate::deactivate() );
+
+// Start the plugin
+new PTX_Core;
+new PTX_Gallery;
