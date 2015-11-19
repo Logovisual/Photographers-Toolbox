@@ -29,6 +29,7 @@ class PTX_Gallery {
 	function __construct() {
 		add_action( 'init', array( $this, 'initialize' ) );
 		add_action( 'pre_get_posts', array( $this, 'change_default_admin_order' ) );
+		add_filter( 'enter_title_here', array( $this, 'change_enter_title_text' ) );
 	}
 
 	/**
@@ -54,6 +55,21 @@ class PTX_Gallery {
 				$wp_query->set('order', 'ASC');
 			}
 		}
+	}
+
+	/**
+	 * Change "enter title here" text
+	 *
+	 * @param string $input The placeholder text to display in the title input field. 
+	 */
+	public function change_enter_title_text( $input ) {
+		$screen = get_current_screen();
+
+		// Change the text if ptx-gallery post type
+		if ( is_admin() && 'ptx-gallery' == $screen->post_type ) {
+			return __( 'Enter a name for the gallery here', 'ptx' );
+		}
+		return $input;
 	}
 
 	/**
