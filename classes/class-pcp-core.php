@@ -22,6 +22,10 @@ if ( ! defined( 'WPINC' ) ) {
  * @since 0.0.1
  */
 class PCP_Core extends PCP_Shared {
+
+	/**
+	 * Construct
+	 */
 	function __construct() {
 		parent::__construct();
 	}

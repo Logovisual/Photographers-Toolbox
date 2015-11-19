@@ -2,8 +2,7 @@
 /**
  * Shared
  *
- * Functions used throughout the plugin. Other classes extend this class to gain
- * access to shared functions.
+ * Shared functions, other classes extend this class to gain access.
  *
  * @package Photography Client Proofing
  * @subpackage Classes
@@ -23,6 +22,10 @@ if ( ! defined( 'WPINC' ) ) {
  * @since 0.0.1
  */
 class PCP_Shared {
+
+	/**
+	 * Construct
+	 */
 	function __construct() {
 
 	}
