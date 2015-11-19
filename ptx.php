@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Photography Client Proofing
+Plugin Name: Photographers Toolbox
 Plugin URI:
 Description:
 Version: 0.0.1
