@@ -44,7 +44,7 @@ spl_autoload_register( 'ptx_autoloader' );
 register_activation_hook( __FILE__, array( 'PTX_Activate', 'activate' ) );
 register_deactivation_hook( __FILE__, array( 'PTX_Deactivate', 'deactivate' ) );
 
-// Start the plugin
+// Start the plugin and its components
 new PTX_Core( 'ptx' );
 new PTX_Gallery;
 new PTX_Download_API;
