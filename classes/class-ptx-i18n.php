@@ -7,7 +7,7 @@
  *
  * @package Photographers Toolbox
  * @subpackage Classes
- * @since 0.0.2
+ * @since 0.1.0
  */
 
 // Direct access not allowed.
@@ -21,7 +21,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Loads and defines the internationalization files for this plugin
  * so that it is ready for translation.
  *
- * @since 0.0.2
+ * @since 0.1.0
  */
 class PTX_i18n extends PTX_Shared {
 

@@ -6,7 +6,7 @@
  *
  * @package Photographers Toolbox
  * @subpackage Classes
- * @since 0.0.1
+ * @since 0.1.0
  */
 
 // Direct access not allowed.
@@ -19,7 +19,7 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * This class defines all code necessary to run during the plugin's activation.
  *
- * @since 0.0.2
+ * @since 0.1.0
  */
 class PTX_Activate {
 
