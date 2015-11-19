@@ -41,12 +41,12 @@ class PCP_Activate {
 		// Add custom capabilities to administrators
 		$admin = get_role( 'administrator' );
 		$admin->add_cap( 'edit_gallery' );
-	    $admin->add_cap( 'edit_galleries' );
-	    $admin->add_cap( 'edit_other_galleries' );
-	    $admin->add_cap( 'publish_galleries' );
-	    $admin->add_cap( 'read_gallery' );
-	    $admin->add_cap( 'read_private_galleries' );
-	    $admin->add_cap( 'delete_gallery' );
+		$admin->add_cap( 'edit_galleries' );
+		$admin->add_cap( 'edit_other_galleries' );
+		$admin->add_cap( 'publish_galleries' );
+		$admin->add_cap( 'read_gallery' );
+		$admin->add_cap( 'read_private_galleries' );
+		$admin->add_cap( 'delete_gallery' );
 
 		// Add custom role "Client"
 		add_role( 'client',	__( 'Client', 'pcp' ) );
@@ -54,7 +54,7 @@ class PCP_Activate {
 		// Add custom capabilities to the client role
 		$client = get_role( 'client' );
 		$client->add_cap( 'read' );
-	    $client->add_cap( 'read_gallery' );
+		$client->add_cap( 'read_gallery' );
 		$client->add_cap( 'read_private_galleries' );
 		$client->add_cap( 'edit_others_posts' ); // Workaround to let users see attachments of private posts 
 	}
