@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Photographers Toolbox
+Plugin Name: Photographers Toolbox ( PTX )
 Plugin URI:
 Description: A plugin designed specifically for photographers. Private client proofing galleries. Watermark photos on upload. Protected digital downloads. Page templating compatible with any modern WordPress theme. Frontend login for clients.
 Version: 0.1.0
