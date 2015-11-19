@@ -21,7 +21,7 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @since 0.0.1
  */
-class PCP_Gallery {
+class PTX_Gallery {
 
 	/**
 	 * Construct
@@ -72,19 +72,19 @@ class PCP_Gallery {
 
 		// Labels for custom post type photography-gallery
 		$labels = array(
-			'name'               => _x( 'Galleries', 'post type general name', 'pcp' ),
-			'singular_name'      => _x( 'Gallery', 'post type singular name', 'pcp' ),
-			'add_new'            => _x( 'Add New', 'gallery', 'pcp' ),
-			'add_new_item'       => __( 'Add New Gallery', 'pcp' ),
-			'edit_item'          => __( 'Edit Gallery', 'pcp' ),
-			'new_item'           => __( 'New Gallery', 'pcp' ),
-			'all_items'          => __( 'All Galleries', 'pcp' ),
-			'view_item'          => __( 'View Gallery', 'pcp' ),
-			'search_items'       => __( 'Search Galleries', 'pcp' ),
-			'not_found'          =>  __( 'No galleries found', 'pcp' ),
-			'not_found_in_trash' => __( 'No galleries found in trash', 'pcp' ),
+			'name'               => _x( 'Galleries', 'post type general name', 'ptx' ),
+			'singular_name'      => _x( 'Gallery', 'post type singular name', 'ptx' ),
+			'add_new'            => _x( 'Add New', 'gallery', 'ptx' ),
+			'add_new_item'       => __( 'Add New Gallery', 'ptx' ),
+			'edit_item'          => __( 'Edit Gallery', 'ptx' ),
+			'new_item'           => __( 'New Gallery', 'ptx' ),
+			'all_items'          => __( 'All Galleries', 'ptx' ),
+			'view_item'          => __( 'View Gallery', 'ptx' ),
+			'search_items'       => __( 'Search Galleries', 'ptx' ),
+			'not_found'          =>  __( 'No galleries found', 'ptx' ),
+			'not_found_in_trash' => __( 'No galleries found in trash', 'ptx' ),
 			'parent_item_colon'  => '',
-			'menu_name'          => __( 'Galleries', 'pcp' )
+			'menu_name'          => __( 'Galleries', 'ptx' )
 		);
 
 		// Args for custom post type photography-gallery
@@ -108,14 +108,14 @@ class PCP_Gallery {
 								   ),
 			'has_archive'          => false,
 			'hierarchical'         => true,
-			'register_meta_box_cb' => 'pcp_gallery_meta_boxes',
+			'register_meta_box_cb' => 'ptx_gallery_meta_boxes',
 			'map_meta_cap'         => true,
 			'menu_icon'            => 'dashicons-format-gallery',
 			'supports'             => array( 'title', 'editor', 'page-attributes', 'thumbnail', 'author', 'comments' ),
-			'rewrite'              => array( 'slug' => _x( 'gallery', 'cpt gallery slug', 'pcp' ) )
+			'rewrite'              => array( 'slug' => _x( 'gallery', 'cpt gallery slug', 'ptx' ) )
 		);
 
 		// Add the post type
-		register_post_type( 'pcp-gallery',$args );
+		register_post_type( 'ptx-gallery',$args );
 	}
 }
