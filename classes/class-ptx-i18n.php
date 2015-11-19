@@ -29,6 +29,8 @@ class PTX_i18n extends PTX_Shared {
 	 * Construct
 	 */
 	function __construct() {
+
+		// Access shared resources
 		parent::__construct();
 	}
 

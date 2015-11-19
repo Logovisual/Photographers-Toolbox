@@ -27,7 +27,11 @@ class PTX_Gallery extends PTX_Shared {
 	 * Construct
 	 */
 	function __construct() {
+
+		// Access shared resources
 		parent::__construct();
+
+		// Hook into WordPress
 		add_action( 'init', array( $this, 'initialize' ) );
 		add_action( 'pre_get_posts', array( $this, 'change_default_admin_order' ) );
 		add_filter( 'enter_title_here', array( $this, 'change_enter_title_text' ) );

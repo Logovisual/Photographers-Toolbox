@@ -27,7 +27,11 @@ class PTX_Core extends PTX_Shared {
 	 * Construct
 	 */
 	function __construct( $domain ) {
+
+		// Access shared resources
 		parent::__construct();
+
+		// Initial plugin setup
 		$this->set_domain( $domain );
 		$this->set_locale();
 		$this->plugin_name = __( 'Photographers Toolbox', $this->domain );
