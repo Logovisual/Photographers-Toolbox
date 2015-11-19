@@ -77,15 +77,15 @@ class PTX_Core extends PTX_Shared {
 		$admin = get_role( 'administrator' );
 		$admin->remove_cap( 'edit_gallery' );
 	    $admin->remove_cap( 'edit_galleries' );
-	    $admin->remove_cap( 'edit_other_galleries' );
-	    $admin->remove_cap( 'publish_galleries' );
-	    $admin->remove_cap( 'read_gallery' );
-	    $admin->remove_cap( 'read_private_galleries' );
-	    $admin->remove_cap( 'delete_gallery' );
+		$admin->remove_cap( 'edit_other_galleries' );
+		$admin->remove_cap( 'publish_galleries' );
+		$admin->remove_cap( 'read_gallery' );
+		$admin->remove_cap( 'read_private_galleries' );
+		$admin->remove_cap( 'delete_gallery' );
 
 		$client = get_role( 'client' );
 		$client->remove_cap( 'read' );
-	    $client->remove_cap( 'read_gallery' );
+		$client->remove_cap( 'read_gallery' );
 		$client->remove_cap( 'read_private_galleries' );
 		remove_role('client');
 	}
