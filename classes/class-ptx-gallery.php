@@ -35,6 +35,7 @@ class PTX_Gallery extends PTX_Shared {
 		add_action( 'init', array( $this, 'initialize' ) );
 		add_action( 'pre_get_posts', array( $this, 'change_default_admin_order' ) );
 		add_filter( 'enter_title_here', array( $this, 'change_enter_title_text' ) );
+		add_action( 'post_submitbox_misc_actions' , array( $this, 'post_submitbox_change_visibility' ) );
 	}
 
 	/**
@@ -87,6 +88,42 @@ class PTX_Gallery extends PTX_Shared {
 	}
 
 	/**
+	 * Change default gallery post Visibility to private
+	 *
+	 * Change the default post submitbox visiility value to Private. Display information
+	 * about it below the submit button to notify user that it's being posted as private.
+	 */
+	function post_submitbox_change_visibility() {
+	    global $post;
+
+	    if ( 'ptx-gallery' != $post->post_type ) {
+	        return;
+		}
+
+		$screen = get_current_screen();
+		if ( 'ptx-gallery' == $screen->post_type && 'edit.php?post_type=ptx-gallery' == $screen->parent_file && !isset( $_GET['action'] ) ) {
+
+		    $visibility = 'private';
+		    $visibility_trans = __( 'Private', $this->domain );
+			$message = __( 'New galleries are always set to <strong>private</strong> by default, to enforce a required login. Visitors not logged in will be redirected to the login page.', $this->domain );
+
+			echo '<script type="text/javascript">';
+	        echo '(function($){';
+			echo 'try {';
+			echo "$('#post-visibility-display').text('" . $visibility_trans . "');";
+			echo "$('#hidden-post-visibility').val('" . $visibility . "');";
+			echo "$('#visibility-radio-" . $visibility . "').attr('checked', true);";
+			echo '} catch(err){}';
+			echo '}) (jQuery);';
+			echo '</script>';
+			
+			echo '<div class="publish_note">';
+			echo $message;
+			echo '</div>';
+		}
+	}
+
+	/**
 	 * Register the gallery post type
 	 *
 	 * @access private
@@ -131,7 +168,7 @@ class PTX_Gallery extends PTX_Shared {
 								   ),
 			'has_archive'          => false,
 			'hierarchical'         => true,
-			'register_meta_box_cb' => 'ptx_gallery_meta_boxes',
+			//'register_meta_box_cb' => 'ptx_gallery_meta_boxes',
 			'map_meta_cap'         => true,
 			'menu_icon'            => 'dashicons-format-gallery',
 			'supports'             => array( 'title', 'editor', 'page-attributes', 'thumbnail', 'author', 'comments' ),

@@ -35,6 +35,27 @@ class PTX_Core extends PTX_Shared {
 		$this->set_domain( $domain );
 		$this->set_locale();
 		$this->plugin_name = __( 'Photographers Toolbox', $this->domain );
+
+		// Hook into WordPress
+		add_action( 'admin_enqueue_scripts', array( $this, 'load_css') );
+		add_action( 'wp_enqueue_scripts', array( $this, 'load_scripts' ) );
+	}
+
+	/**
+	 * Load CSS
+	 */
+	function load_css() {
+
+		wp_register_style( 'ptx-admin-css', plugins_url( 'css/ptx-admin.css', dirname(__FILE__) ) );
+		wp_enqueue_style( 'ptx-admin-css' );
+		
+	}
+
+	/**
+	 * Load JS
+	 */
+	function load_scripts() {
+
 	}
 
 	private function set_locale() {
