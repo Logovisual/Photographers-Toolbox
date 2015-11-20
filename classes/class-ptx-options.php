@@ -490,7 +490,7 @@ class PTX_Options extends PTX_Shared {
      	$selected = !isset( $this->settings['watermark']['image'] ) ? 0 : $this->settings['watermark']['image'];
 		$disabled = !isset( $this->settings['watermark']['enable'] ) ? ' disabled' : '';
 
-		$png_files = ptx_get_png_images();
+		$png_files = $this->get_png_images();
 		print '<select name="ptx_options_watermark[image]" id="watermark_image"'.$disabled.'>';
 		
 		foreach ( $png_files as $id => $title ) {

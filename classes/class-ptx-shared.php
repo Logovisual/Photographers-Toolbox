@@ -92,6 +92,19 @@ class PTX_Shared {
 		return $default_settings;
 	}
 
+	function get_png_images() {
+
+		$attachments = get_posts( array( 'post_type' => 'attachment', 'post_mime_type' => 'image/png', 'post_parent' => 0, 'posts_per_page' => -1 ) );
+
+		$png_media[0] = __( 'No watermark image selected.', 'ptx' );
+
+		foreach ( $attachments as $attachment ) {
+			$png_media[ $attachment->ID ] = $attachment->post_title;
+		}
+
+		return $png_media;
+	}
+
 	/**
 	 * Set text domain
 	 *
