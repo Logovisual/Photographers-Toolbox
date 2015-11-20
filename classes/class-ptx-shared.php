@@ -101,6 +101,17 @@ class PTX_Shared {
 		return $default_settings;
 	}
 
+	/**
+	 * Get gallery IDs
+	 *
+	 * @return array
+	 */
+	protected function get_gallery_ids() {
+		$attachment_ids = get_post_meta( get_the_ID(), '_ptx_image_gallery', true );
+		$attachment_ids = explode( ',', $attachment_ids );
+		return array_filter( $attachment_ids );
+	}
+
 	function get_png_images() {
 
 		$attachments = get_posts( array( 'post_type' => 'attachment', 'post_mime_type' => 'image/png', 'post_parent' => 0, 'posts_per_page' => -1 ) );

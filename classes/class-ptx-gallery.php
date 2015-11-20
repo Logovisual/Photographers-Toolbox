@@ -39,6 +39,11 @@ class PTX_Gallery extends PTX_Shared {
 		add_action( 'post_submitbox_misc_actions' , array( $this, 'post_submitbox_change_visibility' ) );
 		add_action( 'add_attachment', array( $this, 'set_attachment_author_to_post_author' ), 10, 1 );
 		add_filter( 'dashboard_glance_items', array( $this, 'glance_items' ), 10, 1 );
+
+		// Custom columns for the ptx-gallery post type
+		add_filter( 'manage_edit-ptx-gallery_columns',          array( $this, 'edit_ptx_gallery_columns' ) );
+		add_filter( 'manage_edit-ptx-gallery_sortable_columns', array( $this, 'edit_ptx_gallery_sortable_columns' ) );
+		add_action( 'manage_ptx-gallery_posts_custom_column',   array( $this, 'manage_ptx_gallery_posts_custom_column' ), 10, 2 );
 	}
 
 	/**
@@ -81,6 +86,72 @@ class PTX_Gallery extends PTX_Shared {
 			return __( 'Enter a name for the gallery here', $this->domain );
 		}
 		return $input;
+	}
+
+	function edit_ptx_gallery_columns( $columns ) {
+		$columns = array(
+			'cb'                   => "<input type=\"checkbox\" />",
+			'title'                => _x( 'Title', 'admin column name', 'ptx' ),
+			'count_gallery_photos' => _x( 'Photos', 'admin column name', 'ptx' ),
+			'gallery_thumbnail'    => _x( 'Gallery Thumbnails', 'admin column name', 'ptx' ),
+			'author'               => _x( 'Client', 'admin column name', 'ptx' ),
+			'comments'             => _x( 'Comments', 'admin column name', 'ptx' ),
+			'date'                 => _x( 'Date', 'admin column name', 'ptx' ),
+		);
+
+		$columns['comments'] = '<div class="vers"><img alt="'. _x( 'Comments', 'image alt text', 'ptx' ) .'" src="' . esc_url( admin_url( 'images/comment-grey-bubble.png' ) ) . '" /></div>';
+
+		return $columns;
+	}
+
+	function edit_ptx_gallery_sortable_columns( $columns ) {
+		$columns['author'] = 'author';
+		$columns['count_gallery_photos'] = 'count_gallery_photos';
+		return $columns;
+	}
+
+	function manage_ptx_gallery_posts_custom_column( $columns, $post_id ) {
+
+		switch ( $columns ) {
+
+			case 'gallery_thumbnail':
+
+				$ids = $this->get_gallery_ids();
+
+				if ( count( $ids ) > 0 ) {
+					$i=0;
+					foreach( $ids as $id ) {
+
+						$width = (int) 45;
+						$height = (int) 35;
+						$thumb = wp_get_attachment_image( $id, array($width, $height), true );
+
+						if ( isset( $thumb ) ) {
+							echo $thumb;
+						} else {
+							echo '—';
+						}
+						$i++;
+						if( $i >= 5 ) break;
+					}
+				} else {
+					echo '—';
+				}
+				
+			break;
+			case 'count_gallery_photos':
+			
+				$photos = $this->get_gallery_ids();
+				$count = count( $photos );
+
+				if ( $count >= 1 ) {
+					echo $count;
+				} else {
+					echo '—';
+				}
+
+			break;
+		}
 	}
 
 	/**
