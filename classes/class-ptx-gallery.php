@@ -83,6 +83,11 @@ class PTX_Gallery extends PTX_Shared {
 		return $input;
 	}
 
+	/**
+	 * Add objects to "at a glance" box
+	 *
+	 * @return array $items The items to display 
+	 */
 	public function glance_items( $items = array() ) {
 
 		$post_types = array('ptx-gallery');
