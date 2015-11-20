@@ -121,6 +121,9 @@ class PTX_Options extends PTX_Shared {
 		
 		echo "<div class=\"wrap\">\n";
 		printf( '<h2>%s</h2>', __( 'Photograpers Toolbox Options', $this->domain ) );
+		echo '<p>';
+		_e( 'Setting up the PTX plugin properly is important. Part because of security, part because of functionality.', 'ptx' );
+		echo '</p>';
 
 		settings_errors();
 		
@@ -380,37 +383,7 @@ class PTX_Options extends PTX_Shared {
 	 */
 	public function sanitize_general( $input )
 	{
-		$output = array();
-		
-		if ( is_array( $input ) )
-		{
-			foreach ( $input as $key => $value )
-			{
-				if ( isset( $input[ $key ] ) )
-				{
-					switch( $key )
-					{
-						case 'storage_path':
-							if ( is_dir( $value ) )
-							{
-								$output[ $key ] = untrailingslashit( $value );
-							}
-							else
-							{
-								$error_message = $this->get_error( 'invalid_path' );
-								$this->add_admin_notice( 'error', $error_message );
-								$output[ $key ] = $error_message;
-							}
-						break;
-						default:
-							$output[ $key ] = strip_tags( stripslashes( $input[ $key ] ) );
-						break;
-					}
-					
-				}
-			}
-		}
-		return $output;
+		return $input;
 	}
 
 	public function sanitize_watermark( $input ) {
@@ -569,10 +542,14 @@ class PTX_Options extends PTX_Shared {
 		
 		// Check that the directory is writeable
 		if ( is_writable( $storage_path ) ) {
+
+			$fileperms = substr( sprintf( '%o', fileperms( $storage_path ) ), -4 );
+
 			printf(
-				'<p class="description%s">%s</p>',
+				'<p class="description%s">%s %s</p>',
 				' success',
-				__( 'The storage directory path is writable.', $this->domain )
+				__( 'The storage directory path is writable. Permissions set to: ', $this->domain ),
+				$fileperms
 			);
 		} else {
 			printf(
