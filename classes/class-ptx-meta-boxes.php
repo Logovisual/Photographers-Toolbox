@@ -68,7 +68,7 @@ class PTX_Meta_boxes extends PTX_Shared {
 
 		if ( 'ptx-gallery' == $screen->post_type && 'edit.php?post_type=ptx-gallery' == $screen->parent_file && !isset( $_GET['action'] ) ) {
 
-			$message = __( 'Always register your client before adding a gallery. Make sure you select the right client in the dropdown list above.', 'photography' );
+			$message = __( 'Always register your client before adding a gallery. Make sure you select the right client in the dropdown list above.', 'ptx' );
 
 			/**
 			 * TODO FIXME Cleanup code, don't break out of php ( <?php ?> ) make it pretty. Include CSS snippet only on this screen.

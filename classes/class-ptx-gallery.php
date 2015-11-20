@@ -38,6 +38,7 @@ class PTX_Gallery extends PTX_Shared {
 		add_filter( 'enter_title_here', array( $this, 'change_enter_title_text' ) );
 		add_action( 'post_submitbox_misc_actions' , array( $this, 'post_submitbox_change_visibility' ) );
 		add_action( 'add_attachment', array( $this, 'set_attachment_author_to_post_author' ), 10, 1 );
+		add_filter( 'dashboard_glance_items', array( $this, 'glance_items' ), 10, 1 );
 	}
 
 	/**
@@ -80,6 +81,41 @@ class PTX_Gallery extends PTX_Shared {
 			return __( 'Enter a name for the gallery here', $this->domain );
 		}
 		return $input;
+	}
+
+	public function glance_items( $items = array() ) {
+
+		$post_types = array('ptx-gallery');
+		foreach ( $post_types as $type )
+		{
+			if ( ! post_type_exists( $type ) ) continue;
+
+			$num_posts = wp_count_posts( $type );
+			
+			if ( $num_posts ) {
+				$published = intval( $num_posts->private );
+				$post_type = get_post_type_object( $type );
+				$text = _n( '%s Private ' . $post_type->labels->singular_name, '%s Private ' . $post_type->labels->name, $published, 'ptx' );
+				$text = sprintf( $text, number_format_i18n( $published ) );
+				$link = sprintf( __( '<a href="%1$s">%2$s</a>', 'ptx' ), 'edit.php?post_type='.$type, $text );
+				$items[] = sprintf( '<span class="%1$s-count">%2$s</span>', $type, $link ) . "\n";
+
+				$published = intval( $num_posts->publish );
+				$post_type = get_post_type_object( $type );
+				$text = _n( '%s Public ' . $post_type->labels->singular_name, '%s Public ' . $post_type->labels->name, $published, 'ptx' );
+				$text = sprintf( $text, number_format_i18n( $published ) );
+				$link = sprintf( __( '<a href="%1$s">%2$s</a>', 'ptx' ), 'edit.php?post_type='.$type, $text );
+				$items[] = sprintf( '<span class="%1$s-count">%2$s</span>', $type, $link ) . "\n";
+				
+				$published = intval( $num_posts->pending );
+				$post_type = get_post_type_object( $type );
+				$text = _n( '%s ' . $post_type->labels->singular_name.' Pending Review', '%s ' . $post_type->labels->name.' Pending Review', $published, 'ptx' );
+				$text = sprintf( $text, number_format_i18n( $published ) );
+				$link = sprintf( __( '<a href="%1$s">%2$s</a>', 'ptx' ), 'edit.php?post_type='.$type, $text );
+				$items[] = sprintf( '<span class="%1$s-count">%2$s</span>', $type, $link ) . "\n";
+			}
+		}
+		return $items;
 	}
 
 	/**
