@@ -52,7 +52,7 @@ class PTX_Activate {
 		$admin->add_cap( 'delete_gallery' );
 
 		// Add custom role "Client"
-		add_role( 'client',	__( 'Client', 'ptx' ) );
+		add_role( 'client',	__( 'Client', $this->domain ) );
 
 		// Add custom capabilities to the client role
 		$client = get_role( 'client' );

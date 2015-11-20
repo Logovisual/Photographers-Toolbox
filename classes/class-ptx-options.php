@@ -122,7 +122,7 @@ class PTX_Options extends PTX_Shared {
 		echo "<div class=\"wrap\">\n";
 		printf( '<h2>%s</h2>', __( 'Photograpers Toolbox Options', $this->domain ) );
 		echo '<p>';
-		_e( 'Setting up the PTX plugin properly is important. Part because of security, part because of functionality.', 'ptx' );
+		_e( 'Setting up the PTX plugin properly is important. Part because of security, part because of functionality.', $this->domain );
 		echo '</p>';
 
 		settings_errors();

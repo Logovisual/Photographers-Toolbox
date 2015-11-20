@@ -91,15 +91,15 @@ class PTX_Gallery extends PTX_Shared {
 	function edit_ptx_gallery_columns( $columns ) {
 		$columns = array(
 			'cb'                   => "<input type=\"checkbox\" />",
-			'title'                => _x( 'Title', 'admin column name', 'ptx' ),
-			'count_gallery_photos' => _x( 'Photos', 'admin column name', 'ptx' ),
-			'gallery_thumbnail'    => _x( 'Gallery Thumbnails', 'admin column name', 'ptx' ),
-			'author'               => _x( 'Client', 'admin column name', 'ptx' ),
-			'comments'             => _x( 'Comments', 'admin column name', 'ptx' ),
-			'date'                 => _x( 'Date', 'admin column name', 'ptx' ),
+			'title'                => _x( 'Title', 'admin column name', $this->domain ),
+			'count_gallery_photos' => _x( 'Photos', 'admin column name', $this->domain ),
+			'gallery_thumbnail'    => _x( 'Gallery Thumbnails', 'admin column name', $this->domain ),
+			'author'               => _x( 'Client', 'admin column name', $this->domain ),
+			'comments'             => _x( 'Comments', 'admin column name', $this->domain ),
+			'date'                 => _x( 'Date', 'admin column name', $this->domain ),
 		);
 
-		$columns['comments'] = '<div class="vers"><img alt="'. _x( 'Comments', 'image alt text', 'ptx' ) .'" src="' . esc_url( admin_url( 'images/comment-grey-bubble.png' ) ) . '" /></div>';
+		$columns['comments'] = '<div class="vers"><img alt="'. _x( 'Comments', 'image alt text', $this->domain ) .'" src="' . esc_url( admin_url( 'images/comment-grey-bubble.png' ) ) . '" /></div>';
 
 		return $columns;
 	}
@@ -171,23 +171,23 @@ class PTX_Gallery extends PTX_Shared {
 			if ( $num_posts ) {
 				$published = intval( $num_posts->private );
 				$post_type = get_post_type_object( $type );
-				$text = _n( '%s Private ' . $post_type->labels->singular_name, '%s Private ' . $post_type->labels->name, $published, 'ptx' );
+				$text = _n( '%s Private ' . $post_type->labels->singular_name, '%s Private ' . $post_type->labels->name, $published, $this->domain );
 				$text = sprintf( $text, number_format_i18n( $published ) );
-				$link = sprintf( __( '<a href="%1$s">%2$s</a>', 'ptx' ), 'edit.php?post_type='.$type, $text );
+				$link = sprintf( __( '<a href="%1$s">%2$s</a>', $this->domain ), 'edit.php?post_type='.$type, $text );
 				$items[] = sprintf( '<span class="%1$s-count">%2$s</span>', $type, $link ) . "\n";
 
 				$published = intval( $num_posts->publish );
 				$post_type = get_post_type_object( $type );
-				$text = _n( '%s Public ' . $post_type->labels->singular_name, '%s Public ' . $post_type->labels->name, $published, 'ptx' );
+				$text = _n( '%s Public ' . $post_type->labels->singular_name, '%s Public ' . $post_type->labels->name, $published, $this->domain );
 				$text = sprintf( $text, number_format_i18n( $published ) );
-				$link = sprintf( __( '<a href="%1$s">%2$s</a>', 'ptx' ), 'edit.php?post_type='.$type, $text );
+				$link = sprintf( __( '<a href="%1$s">%2$s</a>', $this->domain ), 'edit.php?post_type='.$type, $text );
 				$items[] = sprintf( '<span class="%1$s-count">%2$s</span>', $type, $link ) . "\n";
 				
 				$published = intval( $num_posts->pending );
 				$post_type = get_post_type_object( $type );
-				$text = _n( '%s ' . $post_type->labels->singular_name.' Pending Review', '%s ' . $post_type->labels->name.' Pending Review', $published, 'ptx' );
+				$text = _n( '%s ' . $post_type->labels->singular_name.' Pending Review', '%s ' . $post_type->labels->name.' Pending Review', $published, $this->domain );
 				$text = sprintf( $text, number_format_i18n( $published ) );
-				$link = sprintf( __( '<a href="%1$s">%2$s</a>', 'ptx' ), 'edit.php?post_type='.$type, $text );
+				$link = sprintf( __( '<a href="%1$s">%2$s</a>', $this->domain ), 'edit.php?post_type='.$type, $text );
 				$items[] = sprintf( '<span class="%1$s-count">%2$s</span>', $type, $link ) . "\n";
 			}
 		}
@@ -299,11 +299,11 @@ class PTX_Gallery extends PTX_Shared {
 	 * Because we want our galleries to be "owned" by a client, not the author of it, we'll create
 	 * a custom metabox where a gallery owner can be chosen.
 	 */
-	public function replace_author_meta_box() {
+	function replace_author_meta_box() {
 		remove_meta_box( 'authordiv', 'ptx-gallery', 'normal' );
 		//remove_meta_box( 'authordiv', 'ptx-order', 'normal' );
-		add_meta_box( 'ptx_authordiv', __( 'Client','ptx' ), array( $this->meta_boxes['ptx'], 'author_meta_box_cb' ), 'ptx-gallery', 'side', 'core' );
-		//add_meta_box( 'ptx_authordiv', __( 'Client','ptx' ), array( 'PTX_Meta_Boxes', 'author_meta_box_cb' ), 'ptx-order', 'normal', 'core' );
+		add_meta_box( 'ptx_authordiv', __( 'Client',$this->domain ), array( $this, 'author_meta_box_cb' ), 'ptx-gallery', 'side', 'core' );
+		//add_meta_box( 'ptx_authordiv', __( 'Client',$this->domain ), array( 'PTX_Meta_Boxes', 'author_meta_box_cb' ), 'ptx-order', 'normal', 'core' );
 	}
 
 	/**
