@@ -31,6 +31,11 @@ class PTX_Shared {
 	protected $domain;
 
 	/**
+	 * Meta Boxes
+	 */
+	protected $meta_boxes;
+
+	/**
 	 * The plugin name
 	 *
 	 * @var string $plugin_name
@@ -49,6 +54,7 @@ class PTX_Shared {
 	 */
 	function __construct() {
 
+		// Get default settings
 		$defaults = PTX_Shared::get_default_settings();
 
 		$general   = wp_parse_args( get_option( 'ptx_options_general', $defaults['general'] ), $defaults['general'] );
@@ -60,6 +66,9 @@ class PTX_Shared {
 		$this->settings['watermark'] = $watermark;
 		$this->settings['thumbnail'] = $thumbnail;
 		$thid->settings['pages']     = $pages;
+
+		// Init meta boxes
+		$this->meta_boxes = new PTX_Meta_Boxes;
 	}
 
 	/**

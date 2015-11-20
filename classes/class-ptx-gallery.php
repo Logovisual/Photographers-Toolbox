@@ -34,6 +34,7 @@ class PTX_Gallery extends PTX_Shared {
 		// Hook into WordPress
 		add_action( 'init', array( $this, 'initialize' ) );
 		add_action( 'pre_get_posts', array( $this, 'change_default_admin_order' ) );
+		add_action( 'admin_menu', array( $this, 'replace_author_meta_box' ), 10, 1 );
 		add_filter( 'enter_title_here', array( $this, 'change_enter_title_text' ) );
 		add_action( 'post_submitbox_misc_actions' , array( $this, 'post_submitbox_change_visibility' ) );
 	}
@@ -177,5 +178,18 @@ class PTX_Gallery extends PTX_Shared {
 
 		// Register the post type
 		register_post_type( 'ptx-gallery',$args );
+	}
+
+	/**
+	 * Replace author meta box
+	 *
+	 * Because we want our galleries to be "owned" by a client, not the author of it, we'll create
+	 * a custom metabox where a gallery owner can be chosen.
+	 */
+	public function replace_author_meta_box() {
+		remove_meta_box( 'authordiv', 'ptx-gallery', 'normal' );
+		//remove_meta_box( 'authordiv', 'ptx-order', 'normal' );
+		add_meta_box( 'ptx_authordiv', __( 'Client','ptx' ), array( $this->meta_boxes, 'author_meta_box_cb' ), 'ptx-gallery', 'side', 'core' );
+		//add_meta_box( 'ptx_authordiv', __( 'Client','ptx' ), array( 'PTX_Meta_Boxes', 'author_meta_box_cb' ), 'ptx-order', 'normal', 'core' );
 	}
 }
