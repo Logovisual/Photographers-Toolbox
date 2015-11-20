@@ -68,7 +68,7 @@ class PTX_Shared {
 		$thid->settings['pages']     = $pages;
 
 		// Init meta boxes
-		$this->meta_boxes = new PTX_Meta_Boxes;
+		$this->meta_boxes['ptx'] = new PTX_Meta_Boxes;
 	}
 
 	/**

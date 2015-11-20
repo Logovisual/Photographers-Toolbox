@@ -189,7 +189,7 @@ class PTX_Gallery extends PTX_Shared {
 	public function replace_author_meta_box() {
 		remove_meta_box( 'authordiv', 'ptx-gallery', 'normal' );
 		//remove_meta_box( 'authordiv', 'ptx-order', 'normal' );
-		add_meta_box( 'ptx_authordiv', __( 'Client','ptx' ), array( $this->meta_boxes, 'author_meta_box_cb' ), 'ptx-gallery', 'side', 'core' );
+		add_meta_box( 'ptx_authordiv', __( 'Client','ptx' ), array( $this->meta_boxes['ptx'], 'author_meta_box_cb' ), 'ptx-gallery', 'side', 'core' );
 		//add_meta_box( 'ptx_authordiv', __( 'Client','ptx' ), array( 'PTX_Meta_Boxes', 'author_meta_box_cb' ), 'ptx-order', 'normal', 'core' );
 	}
 }
