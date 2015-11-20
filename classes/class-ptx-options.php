@@ -129,16 +129,16 @@ class PTX_Options extends PTX_Shared {
 		$tab = 'general';
 
 		switch( $screen->base ) {
-			case 'ptx-options_page_ptx_menu_page_watermark':
+			case 'ptx-settings_page_ptx_menu_page_watermark':
 				$tab = 'watermark';
 			break;
-			case 'ptx-options_page_ptx_menu_page_thumbnails':
+			case 'ptx-settings_page_ptx_menu_page_thumbnails':
 				$tab = 'thumbnails';
 			break;
-			case 'ptx-options_page_ptx_menu_page_pages':
+			case 'ptx-settings_page_ptx_menu_page_pages':
 				$tab = 'pages';
 			break;
-			case 'ptx-options_page_ptx_menu_page_debug':
+			case 'ptx-settings_page_ptx_menu_page_debug':
 				$tab = 'debug';
 			break;
 			default:
@@ -461,17 +461,25 @@ class PTX_Options extends PTX_Shared {
 		
 		echo '<h3>Current Plugin Settings</h3>';
 		echo '<ul>';
-		foreach ( $this->options as $data ) {
+		foreach ( $this->settings as $data ) {
 			foreach ( $data as $key => $value ) {
 				print '<li>'.$key.' : '.$value.'</li>';
 			}
 		}
 		echo '</ul>';
+
+		$ptx_installed = get_option( 'ptx_plugin_installed' );
+		
+		if ( $ptx_installed ) {
+			echo '<p>PTX Marked as installed.</p>';
+		} else {
+			echo '<p>PTX <strong>not</strong> marked as installed!</p>';
+		}
 	}
 
 	public function watermark_enable_cb()
 	{
-		$checked = !isset( $this->options['watermark']['enable'] ) ? 0 : $this->options['watermark']['enable'];
+		$checked = !isset( $this->settings['watermark']['enable'] ) ? 0 : $this->settings['watermark']['enable'];
 
 		print '<input type="checkbox" name="ptx_options_watermark[enable]" value="1" '.checked( $checked, 1, false ).'  />';
 		print '<label for="enable">'.__( 'Your watermark logo will be added to all photos uploaded to client galleries.', $this->domain ).'</label>';
@@ -479,8 +487,8 @@ class PTX_Options extends PTX_Shared {
 
 	public function watermark_image_cb()
 	{
-     	$selected = !isset( $this->options['watermark']['image'] ) ? 0 : $this->options['watermark']['image'];
-		$disabled = !isset( $this->options['watermark']['enable'] ) ? ' disabled' : '';
+     	$selected = !isset( $this->settings['watermark']['image'] ) ? 0 : $this->settings['watermark']['image'];
+		$disabled = !isset( $this->settings['watermark']['enable'] ) ? ' disabled' : '';
 
 		$png_files = ptx_get_png_images();
 		print '<select name="ptx_options_watermark[image]" id="watermark_image"'.$disabled.'>';
@@ -496,7 +504,7 @@ class PTX_Options extends PTX_Shared {
 		
 		print '</select>';
 
-		if ( $selected != 0 && isset( $this->options['watermark']['image'] ) ) {
+		if ( $selected != 0 && isset( $this->settings['watermark']['image'] ) ) {
 			printf(
 				'<p class="description%s">%s</p>',
 				' success',
@@ -514,8 +522,8 @@ class PTX_Options extends PTX_Shared {
 
 	public function watermark_margin_cb()
 	{
-		$margin = !isset( $this->options['watermark']['margin'] ) ? 50: $this->options['watermark']['margin'];
-		$disabled = !isset( $this->options['watermark']['enable'] ) ? ' disabled' : '';
+		$margin = !isset( $this->settings['watermark']['margin'] ) ? 50: $this->settings['watermark']['margin'];
+		$disabled = !isset( $this->settings['watermark']['enable'] ) ? ' disabled' : '';
 
 		print '<input class="regular-text ltr" name="ptx_options_watermark[margin]" id="watermark_margin" value="'.$margin.'"'.$disabled.' />';
 		print '<p class="description">'.__('The margin from edge of image.',$this->domain).'</p>';
@@ -523,8 +531,8 @@ class PTX_Options extends PTX_Shared {
 
 	public function watermark_position_cb( $args )
 	{
-		$selected = !isset( $this->options['watermark']['position'] ) ? 'repeat' : $this->options['watermark']['position'];
-		$disabled = !isset( $this->options['watermark']['enable'] ) ? ' disabled' : '';
+		$selected = !isset( $this->settings['watermark']['position'] ) ? 'repeat' : $this->settings['watermark']['position'];
+		$disabled = !isset( $this->settings['watermark']['enable'] ) ? ' disabled' : '';
 
 		print '<select name="ptx_options_watermark[position]" id="watermark_position" type="text"'.$disabled.' />';
 		
@@ -542,7 +550,7 @@ class PTX_Options extends PTX_Shared {
 
 	public function general_jpeg_quality_cb()
 	{
-		$jpeg_quality = !isset( $this->options['general']['jpeg_quality'] ) ? 100: $this->options['general']['jpeg_quality'];
+		$jpeg_quality = !isset( $this->settings['general']['jpeg_quality'] ) ? 100: $this->settings['general']['jpeg_quality'];
 
 		print '<input class="regular-text ltr" name="ptx_options_general[jpeg_quality]" id="general_jpeg_quality" value="'.$jpeg_quality.'" />';
 		print '<p class="description">'.__('Min/Max: 1-100. Set JPEG quality for images being upload.',$this->domain).'</p>';
@@ -551,7 +559,7 @@ class PTX_Options extends PTX_Shared {
 
 	public function general_storage_path_cb()
 	{
-		$storage_path = !isset( $this->options['general']['storage_path'] ) ?  '': $this->options['general']['storage_path'];
+		$storage_path = !isset( $this->settings['general']['storage_path'] ) ?  '': $this->settings['general']['storage_path'];
 		
 		print '<input class="regular-text ltr" name="ptx_options_general[storage_path]" id="watermark_margin" value="'.$storage_path.'" />';
 		print '<p class="description">';
@@ -624,7 +632,7 @@ class PTX_Options extends PTX_Shared {
 
 	public function thumbnail_width_cb()
 	{
-		$width = !isset( $this->options['thumbnail']['width'] ) ? 320 : $this->options['thumbnail']['width'];
+		$width = !isset( $this->settings['thumbnail']['width'] ) ? 320 : $this->settings['thumbnail']['width'];
 
 		print '<input class="regular-text ltr" name="ptx_options_thumbnail[width]" id="thumbnail_width" value="'.$width.'" />';
 		print '<p class="description">'.__('Thumbnail width in pixels.',$this->domain).'</p>';
@@ -632,7 +640,7 @@ class PTX_Options extends PTX_Shared {
 
 	public function thumbnail_height_cb()
 	{
-		$height = !isset( $this->options['thumbnail']['height'] ) ? 240 : $this->options['thumbnail']['height'];
+		$height = !isset( $this->settings['thumbnail']['height'] ) ? 240 : $this->settings['thumbnail']['height'];
 
 		print '<input class="regular-text ltr" name="ptx_options_thumbnail[height]" id="thumbnail_height" value="'.$height.'" />';
 		print '<p class="description">'.__('Thumbnail height in pixels.',$this->domain).'</p>';
@@ -640,7 +648,7 @@ class PTX_Options extends PTX_Shared {
 
 	public function thumbnail_crop_cb()
 	{
-		$crop = !isset( $this->options['thumbnail']['crop'] ) ? 'false' : $this->options['thumbnail']['crop'];
+		$crop = !isset( $this->settings['thumbnail']['crop'] ) ? 'false' : $this->settings['thumbnail']['crop'];
  
 		// TODO Image crop has more options then true/false, add them for more advanced functionality.
 		print '<input class="regular-text ltr" name="ptx_options_thumbnail[crop]" id="thumbnail_crop" value="'.$crop.'" />';
@@ -649,7 +657,7 @@ class PTX_Options extends PTX_Shared {
 
 	public function pages_login_cb()
 	{
-		$login_page_id = !isset( $this->options['pages']['login'] ) ? 100: $this->options['pages']['login'];
+		$login_page_id = !isset( $this->settings['pages']['login'] ) ? 100: $this->settings['pages']['login'];
 
 		print '<input class="regular-text ltr" name="ptx_options_pages[login]" id="pages_login" value="'.$login_page_id.'" />';
 		print '<p class="description">'.__('Select page for login.',$this->domain).'</p>';

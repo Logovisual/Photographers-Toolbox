@@ -60,5 +60,18 @@ class PTX_Activate {
 		$client->add_cap( 'read_gallery' );
 		$client->add_cap( 'read_private_galleries' );
 		$client->add_cap( 'edit_others_posts' ); // Workaround to let users see attachments of private posts
+
+		$default_settings = PTX_Shared::get_default_settings();
+
+		$ptx_installed = get_option( 'ptx_plugin_installed' );
+		if ( false == $ptx_installed ) {
+			add_option( 'ptx_options_general', $default_settings['general'] );
+			add_option( 'ptx_options_watermark', $default_settings['watermark'] );
+			add_option( 'ptx_options_thumbnail', $default_settings['thumbnail'] );
+			add_option( 'ptx_options_pages', $default_settings['pages'] );
+
+			// Mark the plugin as installed, this only occurs once. The ptx_plugin_installed option will not be removed on deactivate. 
+			update_option( 'ptx_plugin_installed', true );
+		}
 	}
 }
