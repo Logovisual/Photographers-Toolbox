@@ -37,6 +37,7 @@ class PTX_Gallery extends PTX_Shared {
 		add_action( 'admin_menu', array( $this, 'replace_author_meta_box' ), 10, 1 );
 		add_filter( 'enter_title_here', array( $this, 'change_enter_title_text' ) );
 		add_action( 'post_submitbox_misc_actions' , array( $this, 'post_submitbox_change_visibility' ) );
+		add_action( 'add_attachment', array( $this, 'set_attachment_author_to_post_author' ), 10, 1 );
 	}
 
 	/**
@@ -191,5 +192,24 @@ class PTX_Gallery extends PTX_Shared {
 		//remove_meta_box( 'authordiv', 'ptx-order', 'normal' );
 		add_meta_box( 'ptx_authordiv', __( 'Client','ptx' ), array( $this->meta_boxes['ptx'], 'author_meta_box_cb' ), 'ptx-gallery', 'side', 'core' );
 		//add_meta_box( 'ptx_authordiv', __( 'Client','ptx' ), array( 'PTX_Meta_Boxes', 'author_meta_box_cb' ), 'ptx-order', 'normal', 'core' );
+	}
+
+	/**
+	 * Set attachment author to post author
+	 */
+	public function set_attachment_author_to_post_author( $attachment_id ) {
+
+		$attach = get_post( $attachment_id );
+
+		if ( $attach->post_parent ) {
+
+			$parent = get_post( $attach->post_parent );
+
+			$the_post = array();
+			$the_post['ID'] = $attachment_id;
+			$the_post['post_author'] = $parent->post_author;
+
+		    wp_update_post( $the_post );
+		}
 	}
 }
