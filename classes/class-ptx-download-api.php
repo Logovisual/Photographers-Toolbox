@@ -126,39 +126,29 @@ class PTX_Download_API extends PTX_Shared {
 				$download_id = absint( $download_id );
 				$gallery_id  = $this->get_post_parent_id_from_attachment_id( $download_id );
 
-				if ( $this->is_user_admin() || ( $this->get_parent_post_author_from_attachment_id( $download_id  ) == get_current_user_id() ) )
-				{
-					if ( $this->post_has_image_attachment( $gallery_id ) )
-					{
+				if ( $this->is_user_admin() || ( $this->get_parent_post_author_from_attachment_id( $download_id  ) == get_current_user_id() ) ) {
+					if ( $this->post_has_image_attachment( $gallery_id ) ) {
 						$post_meta = get_post_meta( $gallery_id, '_original_files', true );
 			
-						if ( is_array( $post_meta ) && array_key_exists( $download_id, $post_meta ) )
-						{
+						if ( is_array( $post_meta ) && array_key_exists( $download_id, $post_meta ) ) {
 							$file = $post_meta[ $download_id ];
 							$this->delivery( $file );
-
 						} else {
-
 							wp_die( 'original file not found, you have not deleted it, have you?' );
 							exit;
 						}
 					}
 			
 				} else {
-
 					wp_die( 'unauthorized access' );
 					exit;
 				}
-
 			break;
 			default:
-
 				wp_die( 'unknown error' );
 				exit;
-
 			break;
 		}
-
 	}
 
 	/**

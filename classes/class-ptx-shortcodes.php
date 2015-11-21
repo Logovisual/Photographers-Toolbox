@@ -14,9 +14,8 @@ class PTX_Shortcodes extends PTX_Shared {
 	 * Get download link
 	 *
 	 * Creates and returns a download link for a ptx-gallery attachment.
-	 * TODO User authentication should be made here...
 	 *
-	 * Usage: [ptx_download id=XX] where XX is he numerical id of the attachment to download.
+	 * Usage: [ptx_download id=XX class=class text="download link text"] where XX is he numerical id of the attachment to download.
 	 *
 	 * @param array $atts 
 	 * @return string
@@ -24,7 +23,9 @@ class PTX_Shortcodes extends PTX_Shared {
 	function get_photo_download_link( $atts ) {
 
 		$atts = shortcode_atts( array(
-			'id' => null
+			'id' => null,
+			'class' => '',
+			'text' => __( 'Download', $this->domain )
 		), $atts );
 		
 		if ( $atts['id'] == null ) {
@@ -41,8 +42,12 @@ class PTX_Shortcodes extends PTX_Shared {
 			return; // TODO Create a more intuitive response than nothing?
 		}
 
-		// Create the download link
-		$link = home_url() . '/api/download/' . $id;
+		$link = sprintf(
+			'<a class="%1$s" href="%2$s">%3$s</a>',
+			$atts['class'],
+			home_url() . '/api/download/' . $id,
+			$atts['text']
+		);
 
 		return $link;
 	}
