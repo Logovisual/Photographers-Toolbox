@@ -244,6 +244,8 @@ class PTX_Gallery extends PTX_Shared {
 	 */
 	private function register_post_type_gallery() {
 
+		global $wp_rewrite;
+
 		// Labels for custom post type photography-gallery
 		$labels = array(
 			'name'               => _x( 'Galleries', 'post type general name', $this->domain ),
@@ -291,6 +293,9 @@ class PTX_Gallery extends PTX_Shared {
 
 		// Register the post type
 		register_post_type( 'ptx-gallery',$args );
+
+		// Flush rewrite rules
+		$wp_rewrite->flush_rules( false );
 	}
 
 	/**

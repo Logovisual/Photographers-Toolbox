@@ -104,21 +104,17 @@ class PTX_Download_API extends PTX_Shared {
 	 */
 	protected function send_response( $status, $download_id = '' ) {
 
-		/**
-		 * @todo Rewrite this part.
-		 */
-
-		/** switch ( $status )
+		switch ( $status )
 		{
 			case 'invalid':
 
-				wp_die( $this->get_error( 'invalid_request' ) );
+				wp_die('invalid request');
 				exit;
 
 			break;
 			case 'error':
 
-				wp_die( $this->get_error( 'unknown_error' ) );
+				wp_die( 'unknown error' );
 				exit;
 
 			break;
@@ -143,25 +139,25 @@ class PTX_Download_API extends PTX_Shared {
 
 						} else {
 
-							wp_die( $this->get_error( 'original_image_not_found' ) );
+							wp_die( 'original file not found, you have not deleted it, have you?' );
 							exit;
 						}
 					}
 			
 				} else {
 
-					wp_die( $this->get_error( 'authorization_required' ) );
+					wp_die( 'unauthorized access' );
 					exit;
 				}
 
 			break;
 			default:
 
-				wp_die( $this->get_error( 'unknown_error' ) );
+				wp_die( 'unknown error' );
 				exit;
 
 			break;
-		} **/
+		}
 
 	}
 

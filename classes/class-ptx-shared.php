@@ -208,6 +208,38 @@ class PTX_Shared {
 	}
 
 	/**
+	 * Get post parent author ID from an attachment ID
+	 *
+	 * @param string $id 
+	 * @return integer
+	 */
+	protected function get_parent_post_author_from_attachment_id( $id ) {
+		$post = get_post( $id );
+		if ( false === get_post_status( $id ) )
+		{
+			$this->get_error( 'invalid_post_parent' );
+			return;
+		} else {
+			$parent_post = get_post( $post->post_parent );
+			return $parent_post->post_author;
+		}
+	}
+
+	/**
+	 * Get post parent ID from an attachment ID
+	 *
+	 * @param string $id 
+	 * @return integer|boolean
+	 */
+	protected function get_post_parent_id_from_attachment_id( $id ) {
+		$post = get_post( $id );
+		if ( $post ) {
+			return $post->post_parent;
+		}
+		return false;
+	}
+
+	/**
 	 * Set text domain
 	 *
 	 * @param string $domain The text domain used for translating.
