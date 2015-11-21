@@ -34,8 +34,16 @@ class PTX_Gallery extends PTX_Shared {
 		// Hook into WordPress
 		add_action( 'init', array( $this, 'initialize' ) );
 		add_action( 'pre_get_posts', array( $this, 'change_default_admin_order' ) );
+		add_action( 'admin_menu', array( $this, 'replace_author_meta_box' ), 10, 1 );
 		add_filter( 'enter_title_here', array( $this, 'change_enter_title_text' ) );
 		add_action( 'post_submitbox_misc_actions' , array( $this, 'post_submitbox_change_visibility' ) );
+		add_action( 'add_attachment', array( $this, 'set_attachment_author_to_post_author' ), 10, 1 );
+		add_filter( 'dashboard_glance_items', array( $this, 'glance_items' ), 10, 1 );
+
+		// Custom columns for the ptx-gallery post type
+		add_filter( 'manage_edit-ptx-gallery_columns',          array( $this, 'edit_ptx_gallery_columns' ) );
+		add_filter( 'manage_edit-ptx-gallery_sortable_columns', array( $this, 'edit_ptx_gallery_sortable_columns' ) );
+		add_action( 'manage_ptx-gallery_posts_custom_column',   array( $this, 'manage_ptx_gallery_posts_custom_column' ), 10, 2 );
 	}
 
 	/**
@@ -78,6 +86,112 @@ class PTX_Gallery extends PTX_Shared {
 			return __( 'Enter a name for the gallery here', $this->domain );
 		}
 		return $input;
+	}
+
+	function edit_ptx_gallery_columns( $columns ) {
+		$columns = array(
+			'cb'                   => "<input type=\"checkbox\" />",
+			'title'                => _x( 'Title', 'admin column name', $this->domain ),
+			'count_gallery_photos' => _x( 'Photos', 'admin column name', $this->domain ),
+			'gallery_thumbnail'    => _x( 'Gallery Thumbnails', 'admin column name', $this->domain ),
+			'author'               => _x( 'Client', 'admin column name', $this->domain ),
+			'comments'             => _x( 'Comments', 'admin column name', $this->domain ),
+			'date'                 => _x( 'Date', 'admin column name', $this->domain ),
+		);
+
+		$columns['comments'] = '<div class="vers"><img alt="'. _x( 'Comments', 'image alt text', $this->domain ) .'" src="' . esc_url( admin_url( 'images/comment-grey-bubble.png' ) ) . '" /></div>';
+
+		return $columns;
+	}
+
+	function edit_ptx_gallery_sortable_columns( $columns ) {
+		$columns['author'] = 'author';
+		$columns['count_gallery_photos'] = 'count_gallery_photos';
+		return $columns;
+	}
+
+	function manage_ptx_gallery_posts_custom_column( $columns, $post_id ) {
+
+		switch ( $columns ) {
+
+			case 'gallery_thumbnail':
+
+				$ids = $this->get_gallery_ids();
+
+				if ( count( $ids ) > 0 ) {
+					$i=0;
+					foreach( $ids as $id ) {
+
+						$width = (int) 45;
+						$height = (int) 35;
+						$thumb = wp_get_attachment_image( $id, array($width, $height), true );
+
+						if ( isset( $thumb ) ) {
+							echo $thumb;
+						} else {
+							echo '—';
+						}
+						$i++;
+						if( $i >= 5 ) break;
+					}
+				} else {
+					echo '—';
+				}
+				
+			break;
+			case 'count_gallery_photos':
+			
+				$photos = $this->get_gallery_ids();
+				$count = count( $photos );
+
+				if ( $count >= 1 ) {
+					echo $count;
+				} else {
+					echo '—';
+				}
+
+			break;
+		}
+	}
+
+	/**
+	 * Add objects to "at a glance" box
+	 *
+	 * @return array $items The items to display 
+	 */
+	public function glance_items( $items = array() ) {
+
+		$post_types = array('ptx-gallery');
+		foreach ( $post_types as $type )
+		{
+			if ( ! post_type_exists( $type ) ) continue;
+
+			$num_posts = wp_count_posts( $type );
+			
+			if ( $num_posts ) {
+				$published = intval( $num_posts->private );
+				$post_type = get_post_type_object( $type );
+				$text = _n( '%s Private ' . $post_type->labels->singular_name, '%s Private ' . $post_type->labels->name, $published, $this->domain );
+				$text = sprintf( $text, number_format_i18n( $published ) );
+				$link = sprintf( __( '<a href="%1$s">%2$s</a>', $this->domain ), 'edit.php?post_type='.$type, $text );
+				$items[] = sprintf( '<span class="%1$s-count">%2$s</span>', $type, $link ) . "\n";
+
+				$published = intval( $num_posts->publish );
+				$post_type = get_post_type_object( $type );
+				$text = _n( '%s Public ' . $post_type->labels->singular_name, '%s Public ' . $post_type->labels->name, $published, $this->domain );
+				$text = sprintf( $text, number_format_i18n( $published ) );
+				$link = sprintf( __( '<a href="%1$s">%2$s</a>', $this->domain ), 'edit.php?post_type='.$type, $text );
+				$items[] = sprintf( '<span class="%1$s-count">%2$s</span>', $type, $link ) . "\n";
+				
+				$published = intval( $num_posts->pending );
+				$post_type = get_post_type_object( $type );
+				$text = _n( '%s ' . $post_type->labels->singular_name.' Pending Review', '%s ' . $post_type->labels->name.' Pending Review', $published, $this->domain );
+				$text = sprintf( $text, number_format_i18n( $published ) );
+				$link = sprintf( __( '<a href="%1$s">%2$s</a>', $this->domain ), 'edit.php?post_type='.$type, $text );
+				$items[] = sprintf( '<span class="%1$s-count">%2$s</span>', $type, $link ) . "\n";
+			}
+		}
+		return $items;
 	}
 
 	/**
@@ -177,5 +291,37 @@ class PTX_Gallery extends PTX_Shared {
 
 		// Register the post type
 		register_post_type( 'ptx-gallery',$args );
+	}
+
+	/**
+	 * Replace author meta box
+	 *
+	 * Because we want our galleries to be "owned" by a client, not the author of it, we'll create
+	 * a custom metabox where a gallery owner can be chosen.
+	 */
+	function replace_author_meta_box() {
+		remove_meta_box( 'authordiv', 'ptx-gallery', 'normal' );
+		//remove_meta_box( 'authordiv', 'ptx-order', 'normal' );
+		add_meta_box( 'ptx_authordiv', __( 'Client',$this->domain ), array( $this, 'author_meta_box_cb' ), 'ptx-gallery', 'side', 'core' );
+		//add_meta_box( 'ptx_authordiv', __( 'Client',$this->domain ), array( 'PTX_Meta_Boxes', 'author_meta_box_cb' ), 'ptx-order', 'normal', 'core' );
+	}
+
+	/**
+	 * Set attachment author to post author
+	 */
+	public function set_attachment_author_to_post_author( $attachment_id ) {
+
+		$attach = get_post( $attachment_id );
+
+		if ( $attach->post_parent ) {
+
+			$parent = get_post( $attach->post_parent );
+
+			$the_post = array();
+			$the_post['ID'] = $attachment_id;
+			$the_post['post_author'] = $parent->post_author;
+
+		    wp_update_post( $the_post );
+		}
 	}
 }

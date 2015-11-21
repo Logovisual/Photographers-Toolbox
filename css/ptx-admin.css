@@ -15,3 +15,10 @@
 	content: "\f348";
 	margin-right: 5px;
 }
+#dashboard_right_now li a:before {
+	content:'';
+}
+
+#dashboard_right_now span.ptx-gallery-count:before {
+	content: "\f233";
+}
