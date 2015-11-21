@@ -53,7 +53,7 @@ class PTX_Watermark extends PTX_Shared {
 		$watermark = imagecreatefrompng( $watermark_file );
 		$new_image = imagecreatefromjpeg( $image );
 
-		$margin = ( $this->settings['watermark']['position'] ) ? $this->settings['watermark']['position'] : 30;
+		$margin = ( $this->settings['watermark']['position'] ) ? $this->settings['watermark']['position'] : 50;
 
 		$watermark_width  = imagesx( $watermark );
 		$watermark_height = imagesy( $watermark );
@@ -80,7 +80,6 @@ class PTX_Watermark extends PTX_Shared {
 		if ( $this->settings['watermark']['position'] == 'repeat' ) {
 			imagesettile( $new_image, $watermark );
 			imagefilledrectangle( $new_image, 0, 0, $new_image_width, $new_image_height, IMG_COLOR_TILED );
-
 		} else {
 			imagecopy( $new_image, $watermark, $x_pos, $y_pos, 0, 0, $watermark_width, $watermark_height );				
 		}
