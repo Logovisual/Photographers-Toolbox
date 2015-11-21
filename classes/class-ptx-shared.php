@@ -154,6 +154,16 @@ class PTX_Shared {
 	}
 
 	/**
+	 * Get current URL
+	 *
+	 * @return string
+	 */
+	protected function get_current_url() {
+		global $wp;
+		return home_url( add_query_arg( array(), $wp->request ) );
+	}
+
+	/**
 	 * Get default plugin settings
 	 *
 	 * @static
@@ -237,6 +247,59 @@ class PTX_Shared {
 			return $post->post_parent;
 		}
 		return false;
+	}
+
+	/**
+	 * Check if user has the administrator role
+	 *
+	 * @return boolean
+	 */
+	protected function is_user_admin() {
+		$user = wp_get_current_user();
+
+		if ( in_array( 'administrator', (array) $user->roles ) ) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Check if post has image attachment(s)
+	 *
+	 * @param integer $post_id
+	 * @return boolean
+	 */
+	protected function post_has_image_attachment( $post_id ) {
+		$args = array(
+			'post_parent' => $post_id,
+			'post_type' => 'attachment',
+			'post_mime_type' => 'image'
+		);
+		$attachments = get_children( $args );
+
+		if ( $attachments ) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Require login, redirect to login page if the user is not logged in
+	 *
+	 * @param string $url The URL to return to after login 
+	 */
+	protected function require_login( $url = null ) {
+
+		// Set return URL
+		if ( $url == null  ) {
+			$url = $this->get_current_url();
+		}
+
+		// Redirect the user
+		if ( ! is_user_logged_in() ) {
+			wp_redirect( wp_login_url( $url ) );
+			exit;
+		}
 	}
 
 	/**
