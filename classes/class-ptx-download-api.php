@@ -104,21 +104,17 @@ class PTX_Download_API extends PTX_Shared {
 	 */
 	protected function send_response( $status, $download_id = '' ) {
 
-		/**
-		 * @todo Rewrite this part.
-		 */
-
-		/** switch ( $status )
+		switch ( $status )
 		{
 			case 'invalid':
 
-				wp_die( $this->get_error( 'invalid_request' ) );
+				wp_die('invalid request');
 				exit;
 
 			break;
 			case 'error':
 
-				wp_die( $this->get_error( 'unknown_error' ) );
+				wp_die( 'unknown error' );
 				exit;
 
 			break;
@@ -130,39 +126,29 @@ class PTX_Download_API extends PTX_Shared {
 				$download_id = absint( $download_id );
 				$gallery_id  = $this->get_post_parent_id_from_attachment_id( $download_id );
 
-				if ( $this->is_user_admin() || ( $this->get_parent_post_author_from_attachment_id( $download_id  ) == get_current_user_id() ) )
-				{
-					if ( $this->post_has_image_attachment( $gallery_id ) )
-					{
+				if ( $this->is_user_admin() || ( $this->get_parent_post_author_from_attachment_id( $download_id  ) == get_current_user_id() ) ) {
+					if ( $this->post_has_image_attachment( $gallery_id ) ) {
 						$post_meta = get_post_meta( $gallery_id, '_original_files', true );
 			
-						if ( is_array( $post_meta ) && array_key_exists( $download_id, $post_meta ) )
-						{
+						if ( is_array( $post_meta ) && array_key_exists( $download_id, $post_meta ) ) {
 							$file = $post_meta[ $download_id ];
 							$this->delivery( $file );
-
 						} else {
-
-							wp_die( $this->get_error( 'original_image_not_found' ) );
+							wp_die( 'original file not found, you have not deleted it, have you?' );
 							exit;
 						}
 					}
 			
 				} else {
-
-					wp_die( $this->get_error( 'authorization_required' ) );
+					wp_die( 'unauthorized access' );
 					exit;
 				}
-
 			break;
 			default:
-
-				wp_die( $this->get_error( 'unknown_error' ) );
+				wp_die( 'unknown error' );
 				exit;
-
 			break;
-		} **/
-
+		}
 	}
 
 	/**
