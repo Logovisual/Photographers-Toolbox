@@ -47,10 +47,8 @@ class PTX_Redirects extends PTX_Shared {
 			$post_parent     = get_post( $request->post_parent );
 
 			// Check if user is administrator
-			if( current_user_can('manage_options') ) {
-
-			} else {
-				if ( $current_user_id != $post_parent->post_author ) {
+			if( !current_user_can('manage_options') ) {
+				if ( $current_user_id !== $post_parent->post_author ) {
 					wp_die( 'You are not authorized. Wrong user ID.' );
 					exit;
 				}
