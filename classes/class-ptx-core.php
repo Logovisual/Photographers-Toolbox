@@ -45,6 +45,9 @@ class PTX_Core extends PTX_Shared {
 		$plugin_basename = plugin_basename( dirname( dirname( __FILE__ ) ).'/ptx.php' );
 		add_filter( "plugin_action_links_$plugin_basename", array( $this, 'add_plugin_settings_link' ) );
 		add_filter( 'plugin_row_meta', array( $this, 'add_plugin_meta' ), 10, 2 );
+
+		// Load plugin page templates
+		PTX_Page_Templates::load();
 	}
 
 	/**

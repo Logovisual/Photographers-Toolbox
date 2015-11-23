@@ -15,6 +15,12 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+// Store plugin path in constant
+define( 'PTX_PATH', plugin_dir_path( __FILE__ ) );
+
+require_once( PTX_PATH . 'includes/helpers.php' );
+require_once( PTX_PATH . 'includes/template-tags.php' );
+
 /**
  * Autoload
  *
