@@ -15,6 +15,12 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+// Store plugin path in constant
+define( 'PTX_PATH', plugin_dir_path( __FILE__ ) );
+
+require_once( PTX_PATH . 'includes/helpers.php' );
+require_once( PTX_PATH . 'includes/template-tags.php' );
+
 /**
  * Autoload
  *
@@ -46,6 +52,7 @@ register_deactivation_hook( __FILE__, array( 'PTX_Deactivate', 'deactivate' ) );
 
 // Start the plugin and its components
 new PTX_Core( 'ptx' );
+new PTX_Redirects;
 new PTX_Gallery;
 new PTX_Download_API;
 new PTX_Watermark;
